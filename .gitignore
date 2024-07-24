@@ -1,0 +1,6 @@
+env
+exercises
+rubrics/__pycache__
+node_modules
+dist
+*.sqlite
