@@ -4,8 +4,11 @@
 	"description": "Automated grading for ADAP WS2024/25",
 	"main": "index.js",
 	"scripts": {
+		"clean": "rm -rf dist",
 		"build": "tsc",
-		"start": "npm run build && node ./dist/grading/grading.js",
+		"downloadRepos:b01": "npm run build && node ./dist/downloadRepos b01",
+		"gradeExercise:b01": "npm run build && node ./dist/gradeExercise b01",
+		"aggregateExercise:b01": "npm run build && node ./dist/aggregateExercise b01",
 		"lint": "biome check"
 	},
 	"author": "Johannes Jablonski",

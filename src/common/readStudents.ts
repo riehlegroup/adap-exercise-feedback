@@ -1,9 +1,10 @@
 import { readFile } from "node:fs/promises";
 import { parse } from "csv-parse/sync";
 import { z } from "zod";
+import { STUDENT_INFO_FILE } from "./config";
 
 // Define the zod schema for a record
-const RecordSchema = z.object({
+export const StudentDataSchema = z.object({
 	matrikelnummer: z
 		.string()
 		.regex(/^\d{8}$/, { message: "Matrikelnummer must be exactly 8 digits" }),
@@ -12,18 +13,18 @@ const RecordSchema = z.object({
 	}),
 });
 
-type Record = z.infer<typeof RecordSchema>;
+export type StudentData = z.infer<typeof StudentDataSchema>;
 
-async function readRecords() {
-	const fileContent = await readFile("input/input.csv", "utf-8");
-	const records: Record[] = parse(fileContent, {
+export async function readStudents() {
+	const fileContent = await readFile(STUDENT_INFO_FILE, "utf-8");
+	const records: StudentData[] = parse(fileContent, {
 		columns: true,
 		skip_empty_lines: true,
 	});
 
 	let hasError = false;
 	for (const record of records) {
-		const result = RecordSchema.safeParse(record);
+		const result = StudentDataSchema.safeParse(record);
 		if (!result.success) {
 			console.error(
 				"Error in record:",
@@ -41,10 +42,3 @@ async function readRecords() {
 
 	return records;
 }
-
-async function main() {
-	const records = await readRecords();
-	console.log(records);
-}
-
-main().then();
