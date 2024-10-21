@@ -1,7 +1,7 @@
-import { execSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import { Logger } from "../common/Logger";
-import { EXERCISE, GRADING_ROOT, REPO_ROOT, UID } from "../common/config";
+import { EXERCISE, GRADING_ROOT, REPO_ROOT } from "../common/config";
 import type { StudentData } from "../common/readStudents";
 
 type GradingConfig = {
@@ -16,7 +16,7 @@ export function runGrading({ student }: GradingConfig) {
 		recursive: true,
 	});
 	try {
-		const result = spawnSync(
+		spawnSync(
 			"docker",
 			[
 				"run",

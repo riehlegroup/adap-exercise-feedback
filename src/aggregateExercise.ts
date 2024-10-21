@@ -16,10 +16,6 @@ function sumUpResult(
 	return grades.map((g) => g[row]).reduce((p, c) => p + c, 0);
 }
 
-const BuildResultSchema = z.object({
-	buildSuccessful: z.boolean(),
-});
-
 const ExerciseResultSchema = z.object({
 	matrikelnummer: z.string(),
 	buildSuccessful: z.boolean(),
