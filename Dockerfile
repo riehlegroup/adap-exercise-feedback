@@ -32,4 +32,5 @@ RUN find ./test -type f -exec sed -i 's|import {\([^}]*\)} from "\(.*\)/solution
 
 CMD \
     find /student/src -mindepth 1 -maxdepth 1 -type d ! -name "adap-$EXERCISE-*" -exec cp -r {} ./src/ \; && \
+    npm run build && echo '{ "buildSuccessful": true }' > /results/build.json && \
     npm run test -- --reporter=verbose --reporter=json --outputFile.json=/results/exercise.json

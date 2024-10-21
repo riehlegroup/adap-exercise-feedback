@@ -15,19 +15,29 @@ export function runGrading({ student }: GradingConfig) {
 	fs.mkdirSync(`${GRADING_ROOT}/${student.matrikelnummer}`, {
 		recursive: true,
 	});
-	const result = spawnSync(
-		"docker",
-		[
-			"run",
-			"-v",
-			`${REPO_ROOT}/${student.matrikelnummer}:/student`,
-			"-v",
-			`${GRADING_ROOT}/${student.matrikelnummer}:/results`,
-			"--rm",
-			`adap-grading:${EXERCISE}`,
-		],
-		{
-			stdio: "inherit",
-		},
-	);
+	try {
+		const result = spawnSync(
+			"docker",
+			[
+				"run",
+				// Mount student repo
+				"-v",
+				`${REPO_ROOT}/${student.matrikelnummer}:/student`,
+				// Mount solution repo
+				"-v",
+				`${GRADING_ROOT}/${student.matrikelnummer}:/results`,
+				// Disable network access (npm ci is called during Building)
+				"--network=none",
+				// Cleanup: Remove the container after the run
+				"--rm",
+				// Image
+				`adap-grading:${EXERCISE}`,
+			],
+			{
+				stdio: "inherit",
+			},
+		);
+	} catch (e) {
+		logger.log(`[${student.matrikelnummer}] Failed.`, e);
+	}
 }
