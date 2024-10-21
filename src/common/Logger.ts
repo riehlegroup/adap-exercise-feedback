@@ -19,4 +19,11 @@ export class Logger {
 
 		console.log(`${date} ${name}`, ...args);
 	}
+
+	error(...args: unknown[]) {
+		const date = `\x1b[90m${this.getDate()}\x1b[0m`; // Light gray
+		const name = `\x1b[1m[${this.name}]\x1b[0m`; // Bold
+
+		console.log(`${date} ${name}`, ...args);
+	}
 }
