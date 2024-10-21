@@ -9,9 +9,14 @@ const logger = new Logger("Repo Downloader");
 function cloneRepo(link: string, destination: string) {
 	const fullDestination = path.join(REPO_ROOT, destination);
 	logger.log(`Cloning ${link} to ${fullDestination}`);
-	spawnSync("git", ["clone", link, fullDestination], {
-		stdio: "inherit",
-	});
+	try {
+		spawnSync("git", ["clone", link, fullDestination], {
+			stdio: "inherit",
+		});
+		logger.log(`Success (${destination})`);
+	} catch (e) {
+		logger.error(`Error (${destination})`, e);
+	}
 }
 
 async function main() {
